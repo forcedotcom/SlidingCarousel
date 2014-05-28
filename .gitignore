@@ -1,0 +1,16 @@
+# OS X noise
+.DS_Store
+
+# Xcode noise
+xcuserdata
+
+# Build noise
+output.txt
+build/artifacts
+build/uia_output
+src/Chatter/Chatter/Resources/Localizations
+src/Chatter/build
+src/dependencies
+
+artifacts
+DerivedData/
