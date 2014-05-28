@@ -45,6 +45,7 @@
 		A5381972191D860A00E1C5DF /* screen_05b_element@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5381958191D860A00E1C5DF /* screen_05b_element@2x.png */; };
 		A5393FCA1922D0D000C3EC9D /* SFOnboardingElement.m in Sources */ = {isa = PBXBuildFile; fileRef = A5393FC91922D0D000C3EC9D /* SFOnboardingElement.m */; };
 		A590790F1936341E009677BC /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A590790E1936341E009677BC /* Media.xcassets */; };
+		A5907912193635F0009677BC /* SFOnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A5907911193635F0009677BC /* SFOnboardingTransition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +104,8 @@
 		A5393FC81922D0D000C3EC9D /* SFOnboardingElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFOnboardingElement.h; sourceTree = "<group>"; };
 		A5393FC91922D0D000C3EC9D /* SFOnboardingElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFOnboardingElement.m; sourceTree = "<group>"; };
 		A590790E1936341E009677BC /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = ../Media.xcassets; sourceTree = "<group>"; };
+		A5907910193635F0009677BC /* SFOnboardingTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFOnboardingTransition.h; sourceTree = "<group>"; };
+		A5907911193635F0009677BC /* SFOnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFOnboardingTransition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +171,8 @@
 				A5381927191C498E00E1C5DF /* SFCarouselOnboardingViewController.m */,
 				A5393FC81922D0D000C3EC9D /* SFOnboardingElement.h */,
 				A5393FC91922D0D000C3EC9D /* SFOnboardingElement.m */,
+				A5907910193635F0009677BC /* SFOnboardingTransition.h */,
+				A5907911193635F0009677BC /* SFOnboardingTransition.m */,
 				A5381939191C4B1700E1C5DF /* SFOnboardingConductor.h */,
 				A538193A191C4B1700E1C5DF /* SFOnboardingConductor.m */,
 				A590790E1936341E009677BC /* Media.xcassets */,
@@ -357,6 +362,7 @@
 			files = (
 				A538193B191C4B1700E1C5DF /* SFOnboardingConductor.m in Sources */,
 				A5381904191C495400E1C5DF /* main.m in Sources */,
+				A5907912193635F0009677BC /* SFOnboardingTransition.m in Sources */,
 				A538192D191C498F00E1C5DF /* SFCarouselOnboardingViewController.m in Sources */,
 				A5393FCA1922D0D000C3EC9D /* SFOnboardingElement.m in Sources */,
 				A5381908191C495400E1C5DF /* SFAppDelegate.m in Sources */,

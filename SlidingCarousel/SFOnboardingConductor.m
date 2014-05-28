@@ -18,8 +18,12 @@
 
 #import "SFOnboardingConductor.h"
 
+#import "SFOnboardingTransition.h"
+
 static const CGSize  kMotionEffectRange = { 15, 15 };
 static const CGFloat kScrollScale = 0.45;
+static const CGRect  kTextLabelFrame = { {0, 0}, {264, 80} };
+static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
 
 @interface SFOnboardingConductor () 
 
@@ -36,9 +40,8 @@ static const CGFloat kScrollScale = 0.45;
 @property (nonatomic, strong) NSMutableArray *backgroundViews;
 @property (nonatomic, strong) NSArray *textItems;
 
-//Onboarding Elements
-@property (nonatomic, strong) NSMutableArray *pageAnimations;
-@property (nonatomic, strong) NSMutableArray *pageItems;
+//Onboarding Transitions
+@property (nonatomic, strong) NSMutableArray *pageTransitions;
 @property (nonatomic, strong) NSMutableDictionary *visitedTransitions;
 @property (nonatomic) NSInteger previousPage;
 
@@ -123,11 +126,10 @@ static const CGFloat kScrollScale = 0.45;
     NSNumber *pages = onboardingDictionary[@"pages"];
     self.mainScrollView.contentSize = CGSizeMake([pages integerValue] * self.mainScrollView.frame.size.width, self.mainScrollView.frame.size.height);
     
-    self.pageItems = [NSMutableArray arrayWithCapacity:[pages integerValue] + 1];
-    self.pageAnimations = [NSMutableArray arrayWithCapacity:[pages integerValue] + 1];
+    self.pageTransitions = [NSMutableArray arrayWithCapacity:[pages integerValue] + 1];
+    //self.pageAnimations = [NSMutableArray arrayWithCapacity:[pages integerValue] + 1];
     for (NSInteger i = 0; i < [pages integerValue] + 1; i++) {
-        [self.pageItems addObject:[NSMutableArray array]];
-        [self.pageAnimations addObject:[NSMutableDictionary dictionaryWithObjects:@[[NSMutableArray array], [NSMutableArray array], [NSMutableArray array]] forKeys:@[@"Appear", @"Disappear", @"DragDisappear"]]];
+        [self.pageTransitions addObject:[[SFOnboardingTransition alloc] initWithIndex:i]];
     }
     
     BOOL showPageControl = [onboardingDictionary[@"showPageControl"] boolValue];
@@ -163,6 +165,10 @@ static const CGFloat kScrollScale = 0.45;
     //Parse each element and assign it to the correct transition point
     for (NSDictionary *element in onboardingDictionary[@"elements"]) {
         [SFOnboardingElement elementWithDictionary:element conductor:self];
+    }
+    
+    if (self.skip) {
+        self.skip.userInteractionEnabled = YES;
     }
 }
 
@@ -267,7 +273,7 @@ static const CGFloat kScrollScale = 0.45;
     for (NSInteger i = 0; i < self.pageControl.numberOfPages - 1; i++) {
         NSString *text = [texts objectForKey:[NSString stringWithFormat:@"%d",i]];
         if (text) {
-            UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 264, 80)];
+            UILabel *textLabel = [[UILabel alloc] initWithFrame:kTextLabelFrame];
             textLabel.font = [UIFont systemFontOfSize:16];
             textLabel.textColor = [UIColor blackColor];
             textLabel.textAlignment = NSTextAlignmentCenter;
@@ -282,15 +288,15 @@ static const CGFloat kScrollScale = 0.45;
         }
     }
     
-    NSString *text = [texts objectForKey:[NSString stringWithFormat:@"%d", self.pageControl.numberOfPages - 1]];
-    if (text) {
+    NSString *closeText = [texts objectForKey:[NSString stringWithFormat:@"%d", self.pageControl.numberOfPages - 1]];
+    if (closeText) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [button.titleLabel setTextAlignment:NSTextAlignmentRight];
-        [button setTitle:text forState:UIControlStateNormal];
+        [button setTitle:closeText forState:UIControlStateNormal];
         [button setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
         
-        button.frame = CGRectMake(0, 0, 264, 35);
+        button.frame = kCloseButtonFrame;
         button.center = CGPointMake(( (self.pageControl.numberOfPages - 1) * (self.containerView.frame.size.width)) + (self.containerView.frame.size.width * 0.5), CGRectGetMaxY(self.containerView.frame) - (100));
         
         [button addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
@@ -335,34 +341,8 @@ static const CGFloat kScrollScale = 0.45;
 }
 
 - (void)setElement:(SFOnboardingElement *)element forIndices:(NSArray *)indices {
-    NSArray *itemIndexes = indices[0];
-    NSArray *appearIndexes = indices[1];
-    NSArray *disappearIndexes = indices[2];
-    NSArray *dragDisappearIndexes = indices[3];
-    
-    //This index is when the item should animate in
-    for (NSNumber *number in itemIndexes) {
-        NSMutableArray *itemArray = [self.pageItems objectAtIndex:[number integerValue]];
-        [itemArray addObject:element];
-    }
-    
-    //These pages are when the element should animate in on drag
-    for (NSNumber *number in appearIndexes) {
-        NSMutableArray *itemArray = [[self.pageAnimations objectAtIndex:[number integerValue]] objectForKey:@"Appear"];
-        [itemArray addObject:element];
-    }
-    
-    //These pages are when the element should animate away on drag
-    for (NSNumber *number in disappearIndexes) {
-        NSMutableArray *itemArray = [[self.pageAnimations objectAtIndex:[number integerValue]] objectForKey:@"Disappear"];
-        [itemArray addObject:element];
-    }
-    
-    //These pages are when an element should animate away when dragging
-    //backwards, used when the element did not appear by drag but should disappear
-    for (NSNumber *number in dragDisappearIndexes) {
-        NSMutableArray *itemArray = [[self.pageAnimations objectAtIndex:[number integerValue]] objectForKey:@"DragDisappear"];
-        [itemArray addObject:element];
+    for (SFOnboardingTransition *transition in self.pageTransitions) {
+        [transition addElement:element withIndicesIfValid:indices];
     }
 }
 
@@ -436,8 +416,8 @@ static const CGFloat kScrollScale = 0.45;
     
     if ((fmodf(contentX, scrollView.frame.size.width) == 0)) {
         NSInteger index = (NSInteger)(contentX / scrollView.frame.size.width);
-        NSArray *pageAnimations = [self.pageItems objectAtIndex:index];
-        for (SFOnboardingElement *element in pageAnimations) {
+        SFOnboardingTransition *transition = [self.pageTransitions objectAtIndex:index];
+        for (SFOnboardingElement *element in transition.animateElements) {
             [self addElementToView:element];
             [element animateApperance];
         }
@@ -479,9 +459,9 @@ static const CGFloat kScrollScale = 0.45;
 }
 
 - (void)animateTransitionWithContentX:(CGFloat)contentX index:(NSInteger)index {
-    NSDictionary *transitions = [self.pageAnimations objectAtIndex:index];
-    NSArray *appear = [transitions objectForKey:@"Appear"];
-    NSArray *disappear = [transitions objectForKey:@"Disappear"];
+    SFOnboardingTransition *transition = [self.pageTransitions objectAtIndex:index];
+    NSArray *appear = transition.appearanceElements;
+    NSArray *disappear = transition.disappearanceElements;
     CGFloat percentage = (fmodf(contentX, self.mainScrollView.frame.size.width) ) / self.mainScrollView.frame.size.width;
     if (percentage <= 0.0 || percentage >= 100.0) {
         return;
@@ -496,7 +476,7 @@ static const CGFloat kScrollScale = 0.45;
     }
     
     if (self.previousPage > index - 1) {
-        NSArray *dragDisappear = [transitions objectForKey:@"DragDisappear"];
+        NSArray *dragDisappear = transition.disappearanceElements;
         for (SFOnboardingElement *element in dragDisappear) {
             [element animateDisappearanceWithFraction:1.0 - percentage];
         }
@@ -508,12 +488,11 @@ static const CGFloat kScrollScale = 0.45;
         NSInteger i = [key integerValue];
         
         BOOL reverse = i > index;
-        
-        NSDictionary *transitions = [self.pageAnimations objectAtIndex:i];
-        NSArray *appear = reverse ? [transitions objectForKey:@"Disappear"] : [transitions objectForKey:@"Appear"];
-        NSArray *disappear = reverse ? [transitions objectForKey:@"Appear"] : [transitions objectForKey:@"Disappear"];
+        SFOnboardingTransition *transition = [self.pageTransitions objectAtIndex:i];
+        NSArray *appear = reverse ? transition.disappearanceElements : transition.appearanceElements;
+        NSArray *disappear = reverse ? transition.appearanceElements : transition.disappearanceElements;
         if (reverse) {
-            disappear = [disappear arrayByAddingObjectsFromArray:[transitions objectForKey:@"DragDisappear"]];
+            disappear = [disappear arrayByAddingObjectsFromArray:transition.dragDisappearElements];
         }
         for (SFOnboardingElement *element in appear) {
             reverse ? [element animateDisappearanceWithFraction:0.0] : [element animateAppearanceWithFraction:1.0];
