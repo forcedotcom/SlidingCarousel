@@ -32,7 +32,7 @@ Root Dictionary: Contains the keys defined below.
 Can contain any of the following keys
 {  
 The key to reference this image, one of the few mandatory keys. Used for transitions (Defined below) to   
-specify what view they are affecting
+specify what view they are affecting  
 ```"key": "Name",```  
 
 The name of the image to load. Only the final part of the path if you have a baseImageURL  
