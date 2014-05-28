@@ -56,18 +56,18 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.springDamping = 1.0;
+        self.springDamping = 1.0f;
         self.springVelocity = 1.0f;
         
         self.duration = 0.2f;
         
-        self.startScale = 1.0;
-        self.endScale = 1.0;
-        self.appearScale = 1.0;
+        self.startScale = 1.0f;
+        self.endScale = 1.0f;
+        self.appearScale = 1.0f;
         
         self.insertIndex = -1;
         
-        self.disppearanceMultiplier = 2.0;
+        self.disppearanceMultiplier = 2.0f;
         
         self.appearanceDelay = 0.0f;
     }
@@ -128,8 +128,6 @@
         NSString *appearanceDelay = [element objectForKey:@"appearanceDelay"];
         NSString *disappearanceMultiplier = [element objectForKey:@"disappearanceMultiplier"];
         
-        
-        
         if (key) {
             self.key = key;
         }
@@ -138,13 +136,14 @@
         
         if (viewsArray) {
             if ([viewsArray count] == 1) {
-                //Single view, retrieve to
+                //Single view, retrieve and set
                 viewKey = [viewsArray objectAtIndex:0];
                 UIView *theView = [conductor viewForKey:viewKey];;
                 if (theView) {
                     self.view = theView;
                 }
             } else if ([viewsArray count] > 1) { //0 views is ignored
+                //If multiple views, place them on top of each other
                 CGSize size = [conductor viewForKey:[viewsArray objectAtIndex:0]].frame.size;
                 UIView *rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
                 rootView.backgroundColor = [UIColor clearColor];
@@ -254,7 +253,6 @@
             dragDisappearIndexes = [NSMutableArray array];
         }
         
-        //TODO: Figure out a way to have these objects add themselves better
         [conductor setElement:self forIndices:@[itemIndexes, appearIndexes, disappearIndexes, dragDisappearIndexes]];
     }
     
@@ -268,10 +266,12 @@
         self.disappearAnimation(self.view, -1, completion);
         return;
     }
+    
     if (self.noTransform) {
         CGPoint translation = CGPointMake(self.endPosition.x - self.appearPosition.x, self.endPosition.y - self.appearPosition.y);
         self.endTransform =  CGAffineTransformConcat(CGAffineTransformMakeTranslation(translation.x, translation.y), CGAffineTransformMakeScale(self.endScale, self.endScale));
     }
+    
     [UIView animateWithDuration:self.duration delay:self.delay usingSpringWithDamping:self.springDamping initialSpringVelocity:self.springVelocity options:0 animations:^{
         self.view.transform = self.endTransform;
     } completion:^(BOOL finished) {
@@ -286,15 +286,18 @@
         self.appearAnimation(self.view, -1, completion);
         return;
     }
+    
     if (self.noTransform) {
         CGPoint translation = CGPointMake(self.appearPosition.x - self.startPosition.x, self.appearPosition.y - self.startPosition.y);
         self.appearTransform =  CGAffineTransformConcat(CGAffineTransformMakeTranslation(translation.x, translation.y), CGAffineTransformMakeScale(self.appearScale, self.appearScale));
         self.startTransform = CGAffineTransformConcat(CGAffineTransformMakeTranslation(self.startPosition.x, self.startPosition.y), CGAffineTransformMakeScale(self.startScale, self.startScale));
     }
+    
     if (!self.animatedOnce) {
         self.view.transform = self.startTransform;
         self.animatedOnce = YES;
     }
+    
     [UIView animateWithDuration:self.duration delay:self.delay usingSpringWithDamping:self.springDamping initialSpringVelocity:self.springVelocity options:0 animations:^{
         self.view.transform = self.appearTransform;
     } completion:^(BOOL finished) {
@@ -317,12 +320,14 @@
         self.appearAnimation(self.view, fraction, nil);
         return;
     }
+    
     CGFloat percentage = 0.0f;
     if (self.appearanceDelay > 0.0) {
         percentage = fraction < self.appearanceDelay ? 0.0 : (fraction - self.appearanceDelay) * (1/self.appearanceDelay);
     } else {
         percentage = fraction;
     }
+    
     percentage = percentage > 0.95 ? 1.0 : percentage;
     CGAffineTransform translate = [self calculatePartialTransformBetweenStartPosition:self.startPosition endPosition:self.appearPosition percentage:percentage];
     CGAffineTransform scale = [self calculatePartialTransformBetweenStartScale:self.startScale endScale:self.appearScale percentage:percentage];
@@ -335,11 +340,13 @@
         self.disappearAnimation(self.view, fraction, nil);
         return;
     }
+    
     CGFloat percentage = fraction * self.disppearanceMultiplier > 1.0 ? 1.0 : fraction * self.disppearanceMultiplier;
     percentage = percentage > 0.95 ? 1.0 : percentage;
     CGAffineTransform translate = [self calculatePartialTransformBetweenStartPosition:self.appearPosition endPosition:self.endPosition percentage:percentage];
     CGAffineTransform scale = [self calculatePartialTransformBetweenStartScale:self.appearScale endScale:self.endScale percentage:percentage];
     CGAffineTransform finalTransform = CGAffineTransformConcat(translate, scale);
+    
     self.view.transform = finalTransform;
 }
 
@@ -350,6 +357,7 @@
         CGPoint newPoint = CGPointMake(startPosition.x + (percentage *(endPosition.x - startPosition.x)), startPosition.y + (percentage *(endPosition.y - startPosition.y)));
         return CGAffineTransformMakeTranslation(newPoint.x, newPoint.y);
     }
+    
     return CGAffineTransformIdentity;
 }
 
@@ -371,6 +379,14 @@
 }
 
 - (CGPoint)pointFromArray:(NSArray *)array {
+    if (!array) {
+        NSLog(@"Missing Point Array. Should be of format [x,y]");
+        return CGPointZero;
+    }
+    if ([array count] < 2 || [array count] > 2) {
+        NSLog(@"Incorrect Point Array: %@ - Should be of format [x,y]", array);
+        return CGPointZero;
+    }
     return CGPointMake([[array objectAtIndex:0] floatValue], [[array objectAtIndex:1] floatValue]);
 }
 

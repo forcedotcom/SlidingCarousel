@@ -228,7 +228,6 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
 - (void)configureBackground:(NSDictionary *)onboardingDictionary {
     //Images that are specified as a background image receive their assignment for
     //parallax scrolling as well as any animation/UIMotion effects
-    
     NSArray *parallaxBackground = onboardingDictionary[@"parallaxBackground"];
     NSArray *floatingImages = onboardingDictionary[@"floatingImages"];
     NSArray *motionImages = onboardingDictionary[@"motionImages"];
@@ -409,10 +408,9 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
     for (UIView *view in self.textItems) {
         view.transform = textTransform;
     }
+    
     NSInteger page = MAX(0, MIN(self.pageControl.numberOfPages,((contentX / scrollView.frame.size.width) + 0.5)));
     self.pageControl.currentPage = page;
-    
-    
     
     if ((fmodf(contentX, scrollView.frame.size.width) == 0)) {
         NSInteger index = (NSInteger)(contentX / scrollView.frame.size.width);
@@ -452,6 +450,7 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
                 [self.containerView insertSubview:element.view atIndex:element.insertIndex];
             }
         }
+        
         [UIView animateWithDuration:0.1 animations:^{
             element.view.alpha = 1.0f;
         }];
@@ -463,13 +462,16 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
     NSArray *appear = transition.appearanceElements;
     NSArray *disappear = transition.disappearanceElements;
     CGFloat percentage = (fmodf(contentX, self.mainScrollView.frame.size.width) ) / self.mainScrollView.frame.size.width;
+    
     if (percentage <= 0.0 || percentage >= 100.0) {
         return;
     }
+    
     for (SFOnboardingElement *element in appear) {
         [self addElementToView:element];
         [element animateAppearanceWithFraction:percentage];
     }
+    
     for (SFOnboardingElement *element in disappear) {
         [self addElementToView:element];
         [element animateDisappearanceWithFraction:percentage];
@@ -491,9 +493,11 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
         SFOnboardingTransition *transition = [self.pageTransitions objectAtIndex:i];
         NSArray *appear = reverse ? transition.disappearanceElements : transition.appearanceElements;
         NSArray *disappear = reverse ? transition.appearanceElements : transition.disappearanceElements;
+        
         if (reverse) {
             disappear = [disappear arrayByAddingObjectsFromArray:transition.dragDisappearElements];
         }
+        
         for (SFOnboardingElement *element in appear) {
             reverse ? [element animateDisappearanceWithFraction:0.0] : [element animateAppearanceWithFraction:1.0];
         }
@@ -541,10 +545,12 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
         NSLog(@"Missing Point Array. Should be of format [x,y]");
         return CGPointZero;
     }
+    
     if ([array count] < 2 || [array count] > 2) {
         NSLog(@"Incorrect Point Array: %@ - Should be of format [x,y]", array);
         return CGPointZero;
     }
+    
     return CGPointMake([[array objectAtIndex:0] floatValue], [[array objectAtIndex:1] floatValue]);
 }
 
@@ -561,6 +567,7 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
     } else {
         [self closeAction];
     }
+    
     return YES;
 }
 
@@ -570,6 +577,7 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
     } else if (direction == UIAccessibilityScrollDirectionLeft || direction == UIAccessibilityScrollDirectionNext) {
         return [self goToPage:self.pageControl.currentPage + 1];
     }
+    
     return NO;
 }
 
