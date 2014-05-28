@@ -15,22 +15,22 @@
 ###JSON Format:
 Root Dictionary: Contains the keys defined below.
 
->"baseImageURL" - String prefix for all UIImage retrievals  
->"pages" - Integer, number of pages  
->"parallaxBackground" - Array of keys for custom or defined images that will make up the background.  
->"floatingImages" - Array of keys to apply a built-in floating animation  
->"motionEnabled" - Boolean Whether the background supports Apple's UIMotionEffect (on supported devices)  
->"showSkip" - Boolean Whether to show the built in skip control. Creates an image with the key "skip". Can customize its transitions.  
->"showPageControl" - Boolean Whether to show the built in page control.  
->"scrollScale" - Parallax scale for background images. Default is 0.45 if not defined  
->"pageText" - Dictionary of String Index Keys and Titles to show under each onboarding screen if desired.
+"baseImageURL" - String prefix for all UIImage retrievals  
+"pages" - Integer, number of pages  
+"parallaxBackground" - Array of keys for custom or defined images that will make up the background.  
+"floatingImages" - Array of keys to apply a built-in floating animation  
+"motionEnabled" - Boolean Whether the background supports Apple's UIMotionEffect (on supported devices)  
+"showSkip" - Boolean Whether to show the built in skip control. Creates an image with the key "skip". Can customize its transitions.  
+"showPageControl" - Boolean Whether to show the built in page control.  
+"scrollScale" - Parallax scale for background images. Default is 0.45 if not defined  
+"pageText" - Dictionary of String Index Keys and Titles to show under each onboarding screen if desired.
     numberOfPages - 1 key is the dismiss button.
 
-images - Array of Image dictionary defined below.
-
 ####Image Definition:
+**images - Key for Array of Image dictionaries defined below.**
+
 Can contain any of the following keys
->{
+>{  
 >The key to reference this image, one of the few mandatory keys. Used for transitions (Defined below) to   
 >specify what view they are affecting
 >>"key": "Name",
@@ -54,19 +54,21 @@ Can contain any of the following keys
 >For the example below, here is how the position would be calculated:  
 >>X: AnotherImageKey.frame.origin.x + (0.65 * AnotherImageKey.frame.size.width)  
 >>Y: AnotherImageKey.frame.origin.y + (0.24 * AnotherImageKey.frame.size.height)  
->Use this + anchorPoint to truly specify your  
+
+>Use this + anchorPoint to truly specify your position  
 >>"relativePosition" : [0.65, 0.24],  
 
 >(Optional)Boolean value for whether or not the view should be added when its created (otherwise  
 >the transition element adds it as needed)  
->>"addImmediately": 1
->}
-
->"elements" - Array of Transition dictionaries defined below.
+>>"addImmediately": 1  
+>}  
 
 ####Transition Definition:
+
+**"elements" - Key for Array of Transition dictionaries defined below.**
+
 May contain any of the following keys. 
->{
+>{  
 >This is the key to reference this transition by. Useful for debugging  
 >String
 >>"key": "Key",
@@ -164,7 +166,7 @@ May contain any of the following keys.
 >Boolean  
 >>"remove": 1
 
->}
+>}  
 
 Note: Multiple Transitions can apply to the same views, so you can create custom animations for an object for different page indices. Do not apply multiple transitions to the same object for one transition. 
 
