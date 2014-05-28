@@ -6,8 +6,10 @@
 
 ##How to Use:
 ####Instantiate an Onboarding Conductor:
-NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"OnboardingData" withExtension:@"json"]];
+```
+NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"OnboardingData" withExtension:@"json"]];  
 self.conductor = [[SFOnboardingConductor alloc] initWithContainer:self.view jsonSpec:data delegate:self];
+```
 
 
 ##Define your JSON:
@@ -15,19 +17,19 @@ self.conductor = [[SFOnboardingConductor alloc] initWithContainer:self.view json
 ###JSON Format:
 Root Dictionary: Contains the keys defined below.
 
-"baseImageURL" - String prefix for all UIImage retrievals  
-"pages" - Integer, number of pages  
-"parallaxBackground" - Array of keys for custom or defined images that will make up the background.  
-"floatingImages" - Array of keys to apply a built-in floating animation  
-"motionEnabled" - Boolean Whether the background supports Apple's UIMotionEffect (on supported devices)  
-"showSkip" - Boolean Whether to show the built in skip control. Creates an image with the key "skip". Can customize its transitions.  
-"showPageControl" - Boolean Whether to show the built in page control.  
-"scrollScale" - Parallax scale for background images. Default is 0.45 if not defined  
-"pageText" - Dictionary of String Index Keys and Titles to show under each onboarding screen if desired.
-    numberOfPages - 1 key is the dismiss button.
+```"baseImageURL"``` - String prefix for all UIImage retrievals  
+```"pages"``` - Integer, number of pages  
+```"parallaxBackground"``` - Array of keys for custom or defined images that will make up the background.  
+```"floatingImages"``` - Array of keys to apply a built-in floating animation  
+```"motionEnabled"``` - Boolean Whether the background supports Apple's UIMotionEffect (on supported devices)  
+```"showSkip"``` - Boolean Whether to show the built in skip control. Creates an image with the key "skip". Can customize its transitions.  
+```"showPageControl"``` - Boolean Whether to show the built in page control.  
+```"scrollScale"``` - Parallax scale for background images. Default is 0.45 if not defined  
+```"pageText"``` - Dictionary of String Index Keys and Titles to show under each onboarding screen if desired.
+    numberOfPages``` - 1 key is the dismiss button.
 
 ####Image Definition:
-**images - Key for Array of Image dictionaries defined below.**
+**```images``` - Key for Array of Image dictionaries defined below.**
 
 Can contain any of the following keys
 {  
@@ -65,7 +67,7 @@ the transition element adds it as needed)
 
 ####Transition Definition:
 
-**"elements" - Key for Array of Transition dictionaries defined below.**
+**```"elements"``` - Key for Array of Transition dictionaries defined below.**
 
 May contain any of the following keys. 
 {  
@@ -174,7 +176,7 @@ Note: Multiple Transitions can apply to the same views, so you can create custom
 ###Objective-C:
 ####Creating a custom view or animation:
 You can set a view for a particular key that your Transition Elements can use above.   
-Simply implement the SFOnboardingConductorDelegate method  
+Simply implement the ```SFOnboardingConductorDelegate``` method  
 ```- (void)configureCustomViewsAndAnimations:(SFOnboardingConductor *)conductor```  
 
 In this method you can call ```[conductor setCustomSubview:view forKey:key]``` or ```[conductor setCustomAnimation:animationBlock forKey:key]```  
