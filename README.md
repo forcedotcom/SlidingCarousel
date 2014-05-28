@@ -26,7 +26,7 @@ Root Dictionary: Contains the keys defined below.
 ```"showPageControl"``` - Boolean Whether to show the built in page control.  
 ```"scrollScale"``` - Parallax scale for background images. Default is 0.45 if not defined  
 ```"pageText"``` - Dictionary of String Index Keys and Titles to show under each onboarding screen if desired.
-    numberOfPages``` - 1 key is the dismiss button.
+```"numberOfPages``` - 1 key is the dismiss button.
 
 ####Image Definition:
 **```images``` - Key for Array of Image dictionaries defined below.**
