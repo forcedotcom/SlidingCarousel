@@ -2,7 +2,7 @@
 
  A tool used to create the onboarding experience for Salesforce1's hybrid application on iOS. Define your onboarding experience with images and a JSON file (and any custom views with Objective-C code), and the conductor takes care of the rest!
 
-
+![Gif](https://raw.githubusercontent.com/forcedotcom/SlidingCarousel/master/Gifs/final.gif)
 
 ##How to Use:
 ####Instantiate an Onboarding Conductor:
