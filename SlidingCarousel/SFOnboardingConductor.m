@@ -478,7 +478,7 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
     }
     
     if (self.previousPage > index - 1) {
-        NSArray *dragDisappear = transition.disappearanceElements;
+        NSArray *dragDisappear = transition.dragDisappearElements;
         for (SFOnboardingElement *element in dragDisappear) {
             [element animateDisappearanceWithFraction:1.0 - percentage];
         }
@@ -492,7 +492,10 @@ static const CGRect  kCloseButtonFrame = { {0, 0}, {264, 35} };
         BOOL reverse = i > index;
         SFOnboardingTransition *transition = [self.pageTransitions objectAtIndex:i];
         NSArray *appear = reverse ? transition.disappearanceElements : transition.appearanceElements;
-        NSArray *disappear = reverse ? transition.appearanceElements : transition.disappearanceElements;
+        NSArray *disappear = reverse ? transition.dragDisappearElements : transition.disappearanceElements;
+        if (reverse) {
+            disappear = [disappear arrayByAddingObjectsFromArray:transition.appearanceElements];
+        }
         
         if (reverse) {
             disappear = [disappear arrayByAddingObjectsFromArray:transition.dragDisappearElements];
