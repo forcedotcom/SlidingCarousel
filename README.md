@@ -1,20 +1,20 @@
-#SlidingCarousel
+# SlidingCarousel
 
  A tool used to create the onboarding experience for Salesforce1's hybrid application on iOS. Define your onboarding experience with images and a JSON file (and any custom views with Objective-C code), and the conductor takes care of the rest!
 
 ![Gif](https://raw.githubusercontent.com/forcedotcom/SlidingCarousel/master/Gifs/final.gif)
 
-##How to Use:
-####Instantiate an Onboarding Conductor:
+## How to Use:
+#### Instantiate an Onboarding Conductor:
 ```
 NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"OnboardingData" withExtension:@"json"]];  
 self.conductor = [[SFOnboardingConductor alloc] initWithContainer:self.view jsonSpec:data delegate:self];
 ```
 
 
-##Define your JSON:
+## Define your JSON:
 
-###JSON Format:
+### JSON Format:
 Root Dictionary: Contains the keys defined below.
 
 ```"baseImageURL"``` - String prefix for all UIImage retrievals  
