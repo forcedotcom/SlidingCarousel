@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A509E3A41EBBA97900E618F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A509E3A31EBBA97900E618F9 /* LaunchScreen.storyboard */; };
 		A53818F8191C495400E1C5DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53818F7191C495400E1C5DF /* Foundation.framework */; };
 		A53818FA191C495400E1C5DF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53818F9191C495400E1C5DF /* CoreGraphics.framework */; };
 		A53818FC191C495400E1C5DF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53818FB191C495400E1C5DF /* UIKit.framework */; };
@@ -59,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A509E3A31EBBA97900E618F9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A53818F4191C495400E1C5DF /* SlidingCarousel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlidingCarousel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A53818F7191C495400E1C5DF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A53818F9191C495400E1C5DF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -190,6 +192,7 @@
 				A5381900191C495400E1C5DF /* InfoPlist.strings */,
 				A5381903191C495400E1C5DF /* main.m */,
 				A5381905191C495400E1C5DF /* SlidingCarousel-Prefix.pch */,
+				A509E3A31EBBA97900E618F9 /* LaunchScreen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				A5381963191D860A00E1C5DF /* icon_map@2x.png in Resources */,
 				A590790F1936341E009677BC /* Media.xcassets in Resources */,
 				A538196A191D860A00E1C5DF /* screen_01b_element@2x.png in Resources */,
+				A509E3A41EBBA97900E618F9 /* LaunchScreen.storyboard in Resources */,
 				A538195A191D860A00E1C5DF /* bubble_01b@2x.png in Resources */,
 				A538196E191D860A00E1C5DF /* screen_03_element@2x.png in Resources */,
 				A538196D191D860A00E1C5DF /* screen_03_element-rays@2x.png in Resources */,
@@ -487,6 +491,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SlidingCarousel/SlidingCarousel-Prefix.pch";
 				INFOPLIST_FILE = "SlidingCarousel/SlidingCarousel-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -500,6 +505,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SlidingCarousel/SlidingCarousel-Prefix.pch";
 				INFOPLIST_FILE = "SlidingCarousel/SlidingCarousel-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

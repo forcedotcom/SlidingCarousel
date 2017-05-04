@@ -31,6 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
     NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"onboarding" withExtension:@"json"]];
     self.conductor = [[SFOnboardingConductor alloc] initWithContainer:self.view jsonSpec:data delegate:self];
     self.conductor.mainScrollView.backgroundColor = [UIColor colorWithRed:0.165 green:0.58 blue:0.839 alpha:1.0];
@@ -69,7 +71,7 @@
     screen2BubbleTop.center = CGPointMake(CGRectGetWidth(screen2BubbleTop.frame), 0.0);
     
     UIView *screen2Bubble = [[UIView alloc] initWithFrame:screen2BubbleTop.frame];
-    screen2Bubble.frame = CGRectMake(self.view.frame.origin.x + 30 , self.view.frame.origin.y + 150, screen2Bubble.frame.size.width, screen2Bubble.frame.size.height);
+    screen2Bubble.frame = CGRectMake(self.view.frame.size.width * 0.2 , self.view.frame.size.height * 0.35, screen2Bubble.frame.size.width, screen2Bubble.frame.size.height);
     screen2Bubble.layer.anchorPoint = CGPointMake(0.0, 0.2);
     screen2Bubble.backgroundColor = [UIColor clearColor];
     
@@ -123,7 +125,7 @@
     
     UIView *screen4Bubble = [[UIView alloc] initWithFrame:screen4BubbleImage.frame];
     screen4Bubble.layer.anchorPoint = CGPointMake(1.0, 0.0);
-    screen4Bubble.center = CGPointMake(CGRectGetMaxX(self.view.frame) - 130, 200);
+    screen4Bubble.center = CGPointMake(CGRectGetMaxX(self.view.frame) * 0.5, CGRectGetMaxY(self.view.frame) * 0.45);
     screen4Bubble.backgroundColor = [UIColor clearColor];
     
     [screen4Bubble addSubview:screen4BubbleImage];
